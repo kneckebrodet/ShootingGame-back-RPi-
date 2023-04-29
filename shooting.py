@@ -28,7 +28,7 @@ def on_hit(servo):
     set_position(servo, 60)
     time.sleep(1)
     set_position(servo, 0)
-    time.sleep(5)
+    time.sleep(0.2)
 
 mqtt_client = MQTTClient("localhost", 1883, "lucas", "rohlin")
 mqtt_client.connect()
@@ -47,7 +47,7 @@ while True:
         if (t_end - game_length) + countdown_time > time.time():
             print("GAME IS COUNTING DOWN")
         else:
-            print("GAME IS ON")
+            print("GAME IS LIVE")
             target_one_hit = GPIO.input(20)
             target_two_hit = GPIO.input(16)
     
