@@ -30,7 +30,7 @@ def on_hit(servo):
     set_position(servo, 0)
     time.sleep(0.2)
 
-mqtt_client = MQTTClient("localhost", 1883, "lucas", "rohlin")
+mqtt_client = MQTTClient("localhost", 1883, "username", "password")
 mqtt_client.connect()
 
 last_activation_time_1 = 0
