@@ -36,44 +36,45 @@ mqtt_client.connect()
 last_activation_time_1 = 0
 last_activation_time_2 = 0
 
-while True:
-    print("getting new input")
-    mqtt_client.subscribe("test")
-    points = 0
-    game_length = 26
-    countdown_time = 3
-    t_end = time.time() + game_length
-    while time.time() < t_end:
-        if (t_end - game_length) + countdown_time > time.time():
-            print("GAME IS COUNTING DOWN")
-        else:
-            print("GAME IS LIVE")
-            target_one_hit = GPIO.input(20)
-            target_two_hit = GPIO.input(16)
-    
-            if not target_one_hit and time.time() - last_activation_time_1 >= 3:
-                thread_pwm1 = threading.Thread(target=on_hit, args=(pwm1,))
-                thread_pwm1.start()
-                last_activation_time_1 = time.time()
-                points += 1
-                print("-----TARGET ONE HIT-----")
-        
-            elif not target_two_hit and time.time() - last_activation_time_2 >= 3:
-                thread_pwm2 = threading.Thread(target=on_hit, args=(pwm2,))
-                thread_pmw2.start()
-                last_activation_time_2 = time.time()
-                points += 1
-                print("-----TARGET TWO HIT-----")
-    
-    ## SET AND CONNECT TO MQTT
-    mqtt_client = MQTTClient("localhost", 1883, "lucas", "rohlin")
-    mqtt_client.connect()
-    mqtt_client.publish("test", points)
-    
-    print("GAME OVER")
-    
+try:
+    while True:
+        print("getting new input")
+        mqtt_client.subscribe("test")
+        points = 0
+        game_length = 26
+        countdown_time = 3
+        t_end = time.time() + game_length
+        while time.time() < t_end:
+            if (t_end - game_length) + countdown_time > time.time():
+                print("GAME IS COUNTING DOWN")
+            else:
+                print("GAME IS LIVE")
+                target_one_hit = GPIO.input(20)
+                target_two_hit = GPIO.input(16)
 
-# Stop the PWM and clean up the GPIO pins
-pwm1.stop()
-pwm2.stop()
-GPIO.cleanup()
+                if not target_one_hit and time.time() - last_activation_time_1 >= 3:
+                    thread_pwm1 = threading.Thread(target=on_hit, args=(pwm1,))
+                    thread_pwm1.start()
+                    last_activation_time_1 = time.time()
+                    points += 1
+                    print("-----TARGET ONE HIT-----")
+
+                elif not target_two_hit and time.time() - last_activation_time_2 >= 3:
+                    thread_pwm2 = threading.Thread(target=on_hit, args=(pwm2,))
+                    thread_pmw2.start()
+                    last_activation_time_2 = time.time()
+                    points += 1
+                    print("-----TARGET TWO HIT-----")
+
+        ## SET AND CONNECT TO MQTT
+        mqtt_client = MQTTClient("localhost", 1883, "lucas", "rohlin")
+        mqtt_client.connect()
+        mqtt_client.publish("test", points)
+
+        print("GAME OVER")
+
+except KeyboardInterrupt:
+    # Stop the PWM and clean up the GPIO pins
+    pwm1.stop()
+    pwm2.stop()
+    GPIO.cleanup()
