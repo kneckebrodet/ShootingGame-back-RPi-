@@ -38,8 +38,8 @@ last_activation_time_2 = 0
 
 try:
     while True:
-        print("getting new input")
-        mqtt_client.subscribe("test")
+        print("Waiting for start signal...")
+        mqtt_client.subscribe("topic")
         points = 0
         game_length = 26
         countdown_time = 3
@@ -66,12 +66,12 @@ try:
                     points += 1
                     print("-----TARGET TWO HIT-----")
 
-        ## SET AND CONNECT TO MQTT
+        ## SET AND CONNECT TO MQTT, SEND POINTS
         mqtt_client = MQTTClient("localhost", 1883, "lucas", "rohlin")
         mqtt_client.connect()
         mqtt_client.publish("test", points)
 
-        print("GAME OVER")
+        print("GAME FINISHED")
 
 except KeyboardInterrupt:
     # Stop the PWM and clean up the GPIO pins
