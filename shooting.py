@@ -69,7 +69,7 @@ try:
         ## SET AND CONNECT TO MQTT, SEND POINTS
         mqtt_client = MQTTClient("localhost", 1883, "username", "password")
         mqtt_client.connect()
-        mqtt_client.publish("test", points)
+        mqtt_client.publish("topic", points)
 
         print("GAME FINISHED")
 
