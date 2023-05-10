@@ -61,7 +61,7 @@ try:
 
                 elif not target_two_hit and time.time() - last_activation_time_2 >= 3:
                     thread_pwm2 = threading.Thread(target=on_hit, args=(pwm2,))
-                    thread_pmw2.start()
+                    thread_pwm2.start()
                     last_activation_time_2 = time.time()
                     points += 1
                     print("-----TARGET TWO HIT-----")
